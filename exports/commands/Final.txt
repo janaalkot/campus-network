@@ -1,0 +1,205 @@
+Router 1 commands 
+---------------------------------
+ip address print
+
+ ip address add address=172.16.20.246/30 interface=ether2
+ ip address add address=172.16.10.246/30 interface=ether3
+ ip address add address=172.16.50.246/30 interface=ether4
+
+
+‎first command:
+ routing rip instance add name="router1-instance" redistribute=connected,rip route-timeout=30 route-gc-timeout=30 update-interval=15
+
+second command:
+
+routing rip interface-template add interface=ether2
+routing rip interface-template add interface=ether3
+routing rip interface-template add interface=ether4
+ 
+routing rip interface-template add interface=ether1 mode=passive
+>>>> then enter instance name when prompted > Here :router1-instance
+
+
+DHCP{}
+
+
+ip pool add name=pool1 ranges=10.10.10-10.10.0.100 
+ip pool print
+ip dhcp-server add interface=ether1 address-pool=pool1 lease-time=24h name=dhcp1 disabled=no
+ip dhcp server print
+ip dhcp-server network add address=10.10.0.0/24 dns-server=8.8.8.8,8.8.4.4 gateway=10.10.0.1/24
+ip dhcp-server network print
+
+
+
+
+
+
+
+
++++++++++++++++++++++++++++++++
+Router 2 commands 
+---------------------------------
+ ip address print
+
+ ip address add address=172.16.40.246/30 interface=ether2
+ ip address add address=172.16.10.245/30 interface=ether3
+ ip address add address=172.16.60.246/30 interface=ether4
+
+
+routing rip interface-template add interface=ether2
+routing rip interface-template add interface=ether3
+routing rip interface-template add interface=ether4
+
+
+‎first command:
+ routing rip instance add name="router2-instance" redistribute=connected,rip route-timeout=30 route-gc-timeout=30 update-interval=15
+
+second command:
+
+routing rip interface-template add interface=ether2
+routing rip interface-template add interface=ether3
+routing rip interface-template add interface=ether4
+
+routing rip interface-template add interface=ether1 mode=passive
+>>>> then enter instance name when prompted > Here :router2-instance
+
+-> after 15 second 
+third command : routing rip neighbor print
+
+-----------> Done 
+
+
+interface vlan add name=vlan10 vlan-id=10 interface=ether1 disabled=no
+interface vlan add name=vlan20 vlan-id=20 interface=ether1 disabled=no
+interface vlan print
+interface print
+---
+ip address add address= 10.21.0.1/24 interface=vlan10
+ip address add address= 10.22.0.1/24 interface=vlan20
+
+---
+ip dhcp-client print
+ip dhcp-client remove numbers=0
+
+-------
+ip pool add name=pool1 ranges=10.21.0.10-10.21.0.240
+ip pool print
+ip dhcp-server add interface=vlan10 address-pool=pool1 lease-time=24h name=dhcp1
+ip dhcp-server network add address=10.21.0.0/24 dns-server 8.8.8.8,8.8.4.4 gateway=10.21.0.1 
+ip dhcp-server network print
+
+
+-------
+
+ip pool add name=pool2 ranges=10.22.0.10-10.22.0.240
+ip pool print
+ip dhcp-server add interface=vlan20 address-pool=pool2 lease-time=24h name=dhcp2
+ip dhcp-server network add address=10.22.0.0/24 dns-server 8.8.8.8,8.8.4.4 gateway=10.22.0.1 
+ip dhcp-server network print
+----
+
+ip dhcp-server lease print 
+ip router print
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Router 3 commands
+/ip address print
+
+
+ip address add address=172.16.20.245/30 interface=ether2
+ip address add address=172.16.30.246/30 interface=ether3
+ip address add address=172.16.60.245/30 interface=ether4
+first command:
+
+
+routing rip instance add name="router3-instance" redistribute=connected,rip route-timeout=30 route-gc-timeout=30 update-interval=15
+second command:
+
+
+routing rip interface-template add interface=ether2
+routing rip interface-template add interface=ether3
+routing rip interface-template add interface=ether4
+
+routing rip interface-template add interface=ether1 mode=passive
+>>>> then enter instance name when prompted > Here :router3-instance
+
+
+-> after 15 second
+third command:
+
+ 
+ 
+routing rip neighbor print
+Expected Output:
+
+
+-----------> Done
+
+DHCP{}
+
+
+ip pool add name=pool1 ranges=10.30.0.10-10.30.0.100 
+ip pool print
+ip dhcp-server add interface=ether1 address-pool=pool1 lease-time=24h name=dhcp1 disabled=no
+ip dhcp server print
+ip dhcp-server network add address=10.30.0.0/24 dns-server=8.8.8.8,8.8.4.4 gateway=10.30.0.1/24
+ip dhcp-server network print
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			Router 4 commands
+ip address print
+
+ 
+ 
+ip address add address=172.16.30.245/30 interface=ether3
+ip address add address=172.16.40.245/30 interface=ether2
+ip address add address=172.16.50.245/30 interface=ether4
+first command:
+
+ 
+ 
+routing rip instance add name="router4-instance" redistribute=connected,rip route-timeout=30 route-gc-timeout=30 update-interval=15
+second command:
+
+routing rip interface-template add interface=ether2
+routing rip interface-template add interface=ether3
+routing rip interface-template add interface=ether4
+ 
+routing rip interface-template add interface=ether1 mode=passive
+>>>> then enter instance name when prompted > Here :router4-instance
+
+
+-> after 15 second
+third command:
+
+ 
+ 
+routing rip neighbor print
+
+
+
+DHCP{}
+
+
+ip pool add name=pool1 ranges=10.40.0.10-10.40.0.100 
+ip pool print
+ip dhcp-server add interface=ether1 address-pool=pool1 lease-time=24h name=dhcp1 disabled=no
+ip dhcp server print
+ip dhcp-server network add address=10.40.0.0/24 dns-server=8.8.8.8,8.8.4.4 gateway=10.40.0.1/24
+ip dhcp-server network print
+
+
+
+
+
+
+
+
